@@ -20,27 +20,7 @@ func arc4random_uniform64(_ upperBound: UInt64) -> UInt64 {
     guard upperBound > 0 else {
         return 0
     }
-
-    let upperBoundHigh = UInt32(truncatingIfNeeded: (upperBound >> 32))
-
-    guard upperBoundHigh > 0 else {
-        let lowerHalf = UInt32(truncatingIfNeeded: upperBound)
-        return UInt64(arc4random_uniform(lowerHalf))
-    }
-
-    func generateRandom(within highBits: UInt32) -> UInt64 {
-        let high: UInt32 = arc4random_uniform(highBits)
-        let low: UInt32 = arc4random()
-        let result: UInt64 = UInt64(high) << 32 + UInt64(low)
-        return result
-    }
-
-    var result = generateRandom(within: upperBoundHigh)
-    while result >= upperBound {
-        result = generateRandom(within: upperBoundHigh)
-    }
-
-    return result
+    return UInt64.random(in: 0..<upperBound)
 }
 
 func arc4random_uniform256(_ upperBound: UInt256) -> UInt256 {
@@ -63,10 +43,7 @@ func arc4random_uniform256(_ upperBound: UInt256) -> UInt256 {
 }
 
 func arc4random64() -> UInt64 {
-    let high: UInt32 = arc4random()
-    let low: UInt32 = arc4random()
-    let result: UInt64 = UInt64(high) << 32 + UInt64(low)
-    return result
+    UInt64.random(in: UInt64.min...UInt64.max)
 }
 
 func arc4random256() -> UInt256 {
