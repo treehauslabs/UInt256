@@ -92,9 +92,9 @@ extension UInt256: Numeric {
     }
 
     public static func divisionWithRemainder(_ lhs: UInt256, _ rhs: UInt256) -> (UInt256, UInt256) {
-        guard lhs > 0 && rhs > 1 else {
-            return (0, 0)
-        }
+        guard rhs > 0 else { return (0, 0) }
+        guard lhs > 0 else { return (0, 0) }
+        if rhs == UInt256(1) { return (lhs, 0) }
 
         guard lhs >= rhs else {
             return (0, lhs)
